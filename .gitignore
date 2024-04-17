@@ -485,3 +485,6 @@ $RECYCLE.BIN/
 
 # Request files
 requests/*
+
+# EF Migrations files
+Migrations/*

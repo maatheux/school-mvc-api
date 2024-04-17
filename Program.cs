@@ -1,6 +1,22 @@
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+using Microsoft.EntityFrameworkCore;
+using SchoolSystem.Data;
 
-app.MapGet("/", () => "Hello World!");
+var builder = WebApplication.CreateBuilder(args);
+{
+    ConfigureServices(builder);
+}
+
+var app = builder.Build();
+{
+    app.MapHealthChecks("/health");
+}
 
 app.Run();
+
+void ConfigureServices(WebApplicationBuilder webApplicationBuilder)
+{
+    string connectionString = webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection")!;
+    webApplicationBuilder.Services.AddDbContext<SchoolDataContext>(options => 
+        options.UseSqlServer(connectionString));
+    webApplicationBuilder.Services.AddHealthChecks();
+}
